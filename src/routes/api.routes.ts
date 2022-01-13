@@ -1,6 +1,9 @@
 import { Router } from 'express'
-import * as sessionControler from '../controllers/session.controller';
-import * as userControler from '../controllers/user.controller'
+import * as sessionController from '../controllers/session.controller';
+import * as userController from '../controllers/user.controller'
+import * as movieController from '../controllers/movie.controller'
+import { authorize   } from '../middlewares/auth'
+
 
 const apiRouter = Router();
 
@@ -15,15 +18,19 @@ apiRouter.get('/', (req,res) => {
 
 /* ROTAS DE USUÁRIO */
 
-apiRouter.get('/users/id/:id/', userControler.view)
-apiRouter.delete('/users/destroy/:id/', userControler.destroy)
+apiRouter.get('/users/id/:id/', userController.view)
+apiRouter.post('/users/new/', userController.create)
+apiRouter.delete('/users/destroy/:id/', userController.destroy)
 
 
 /* ROTAS DE SESSÃO */
-
-apiRouter.post('/users/new', sessionControler.create)
+// primeiro roda o middleware: authorize, depois vai para rota: sessionControler.index
+apiRouter.get('/session', authorize,  sessionController.index)
+apiRouter.post('/session/new', sessionController.create)
 
 /* ROTAS DE FILME */
+apiRouter.get('/movies', authorize,  movieController.index);
+
 
 /* ROTAS DE LISTA */
 

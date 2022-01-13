@@ -1,8 +1,21 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.model';
 import jwt from 'jsonwebtoken';
-import config from '../config';
+import dotenv from 'dotenv';
+import { ENV_VARS } from '../index';
 
+// unica funcao desta rota é mostrar o req user
+function index(req: Request, res: Response) {
+    // não esta autorizado a acessar esta rota
+    if(!req.user){
+        return res.status(401).json({error: 'Usuário não autorizado'})
+    }
+
+    // se ele existir, envia um return
+    return res.status(200).json({
+        userId: req.user
+    })
+}
 
 async function create(req: Request, res: Response) {
     const { name, email, password } = req.body;
@@ -11,45 +24,46 @@ async function create(req: Request, res: Response) {
 
     console.log(userExists)
 
-    if (userExists) {
+    if (!userExists) {
         return res.status(403).json({
-            message: 'Usuário já cadastrado'
+            message: 'Não foi possível autenticar'
         });
     }
 
-    const user = new User({ name, email, password });
+    // verifica se a senha é valida
+    const isValid = await userExists.comparePassword(password);
 
-    user.save((error: any, result: any): void => {
-        if (error) {
-            console.log('Error: ', typeof error)
-            res.json(error);
+
+    // se a senha não for válida, para a aplicação
+    if (!isValid) {
+        return res.status(401).json({
+            message: 'Não foi possível autenticar'
+        });
+    }
+
+    // criar token de acesso
+    const accessToken = createAccessToken(userExists._id);
+
+    res.status(200).json(
+        {
+            user: {
+                id: userExists._id,
+                name: userExists.name
+            },
+            accessToken
         }
-
-        console.log('Result: ', typeof result);
-
-        // criar token de acesso
-        const accessToken = createAccessToken(user._id);
-
-        res.status(201).json(
-            {
-                user: {
-                    id: result._id,
-                    name: result.name
-                },
-
-                accessToken
-            }
-        );
-    })
-
+    );
 }
 
 function createAccessToken(userId: string) {
+
+    const token = ENV_VARS.token_secret as string;
+
     const acessToken = jwt.sign(
         {
             id: userId
         },
-        config.TOKEN_SECRET,
+        token,
         {
             expiresIn: 900 // 15 min
         }
@@ -58,4 +72,4 @@ function createAccessToken(userId: string) {
     return acessToken
 }
 
-export { create };
+export { create, index };

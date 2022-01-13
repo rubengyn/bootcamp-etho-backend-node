@@ -1,5 +1,8 @@
 src/
 @types/
+    express/
+        index.ts            -> extende o tipo de express
+
 
 controllers/                -> controllers
     session.controller.ts       -> sessão cadastro
@@ -16,6 +19,7 @@ models/                     -> models
    
 routes/                     -> rotas, 
     api.route.ts                -> rotas de api da aplicação
+    external.routes.ts          -> rotas externas da aplicação
 
 config.default.ts           -> exemplo config aberto
 
