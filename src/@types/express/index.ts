@@ -1,7 +1,7 @@
-import * as express from 'express'
+import * as express from 'express';
 
 declare module 'express' {
-    export interface Request{
+    export interface Request {
         user?: string;
     }
 }

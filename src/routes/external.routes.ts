@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { movieFetcher, bulkCreate } from '../external/movie.fectcher'
+import { movieFetcher, bulkCreate } from '../external/movieFetcher'
 
 const extRouter = Router()
 
-extRouter.get('/external', movieFetcher)
-extRouter.post('/external/createBulk', bulkCreate)
+extRouter.get('/external', movieFetcher);
+extRouter.post('/external/createBulk', bulkCreate);
 
-export { extRouter }
+export { extRouter };

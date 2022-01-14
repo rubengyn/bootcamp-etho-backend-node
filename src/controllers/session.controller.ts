@@ -1,20 +1,23 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.model';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { ENV_VARS } from '../index';
+
+const token_secret = process.env.TOKEN_SECRET;
 
 // unica funcao desta rota é mostrar o req user
 function index(req: Request, res: Response) {
     // não esta autorizado a acessar esta rota
-    if(!req.user){
-        return res.status(401).json({error: 'Usuário não autorizado'})
+    if (!req.user) {
+        return res.status(401).json({
+            error: 'Usuário não autorizado'
+        });
     }
 
     // se ele existir, envia um return
     return res.status(200).json({
         userId: req.user
-    })
+    });
 }
 
 async function create(req: Request, res: Response) {
@@ -44,7 +47,7 @@ async function create(req: Request, res: Response) {
     // criar token de acesso
     const accessToken = createAccessToken(userExists._id);
 
-    res.status(200).json(
+    return res.status(200).json(
         {
             user: {
                 id: userExists._id,
@@ -59,17 +62,17 @@ function createAccessToken(userId: string) {
 
     const token = ENV_VARS.token_secret as string;
 
-    const acessToken = jwt.sign(
+    const accessToken = jwt.sign(
         {
             id: userId
         },
         token,
         {
-            expiresIn: 900 // 15 min
+            expiresIn: 86400 // 1 dia min
         }
     )
 
-    return acessToken
+    return accessToken;
 }
 
 export { create, index };

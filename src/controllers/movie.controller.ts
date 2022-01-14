@@ -4,6 +4,8 @@ import { paginate } from '../middlewares/pagination';
 
 // pegar todos
 function index(req: Request, res: Response) {
+    const page: string = req.query.page as string;
+
     Movie.find((error, result) => {
         if (error) {
             return res.status(500).json({
@@ -12,7 +14,7 @@ function index(req: Request, res: Response) {
         }
 
         return res.status(201).json(
-            paginate(result,10,1)
+            paginate(result, 10, parseInt(page))
         );
     });
 }
@@ -46,10 +48,11 @@ async function create(req: Request, res: Response) {
 
 }
 
+
 // visualizar filme especifico
 function view(req: Request, res: Response) {
     const { id } = req.params;
-    
+
     Movie.findById(id, (error: any, result: any) => {
         if (error) {
             return res.status(500).json({
@@ -57,32 +60,36 @@ function view(req: Request, res: Response) {
             });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
             result
         });
     });
-
-
 }
 
-// busca filme especifico
-function search(req: Request, res: Response) {
+9	
+// busca filme
+async function search(req: Request, res: Response) {
     const { search } = req.params;
-    
-    const filtrosBusca = 'name category description';
 
-    Movie.find( { $or: [{ name: search },{ category: search }] } , filtrosBusca, (error: any, result: any) => {
-        if( error ){
-            return res.status(500).json({
-                message: 'Erro: '+error
-            }); 
-        }
-        return res.status(200).json({
-           result
-        }); 
+    const regex = new RegExp(search, 'gi');
+
+    const result = await Movie.find({ name: regex }).catch(error => {
+        console.log(error);
+
+        return res.status(500).json({
+            message: error
+        });
     });
 
+    if (!result) {
+        return res.status(500).json({
+            message: 'Não foi possível encontrar'
+        });
+    }
 
+    return res.status(200).json({
+        result
+    });
 }
 
 export { index, create, view, search };

@@ -9,19 +9,20 @@ const ListSchema = new Schema(
     {
         user_id: {
             type: SchemaTypes.ObjectId,
-            required: true
+            required: true,
+            ref: 'User'
         },
         movie_id: {
             type: SchemaTypes.ObjectId,
             required: true,
-            unique: true
+            ref: 'Movie'
         },
     },
     {
         // collection do banco de dados, data ....
         timestamps: true
     }
-)
+);
 
 const List = model<ListDocument>("List", ListSchema);
 

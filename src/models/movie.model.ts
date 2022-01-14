@@ -1,15 +1,15 @@
 // dependencias 
-import { Document, Schema, model } from 'mongoose'
+import { Document, Schema, model } from 'mongoose';
 
 
 
-interface MovieDocument{
+interface MovieDocument {
     name: string;
     category: string;
     description: string;
     media_type: string;
     poster: string;
-    backdrop? : string;
+    backdrop?: string;
 }
 
 // documento para o próprio mongo
@@ -21,14 +21,17 @@ const MovieSchema = new Schema(
         },
         category: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
         media_type: {
             type: String,
             required: true
         },
         description: {
+            type: String,
+            required: true
+        },
+        poster: {
             type: String,
             required: true
         },
@@ -40,7 +43,7 @@ const MovieSchema = new Schema(
         // collection do banco de dados, createAt, updateAT ....
         timestamps: true
     }
-)
+);
 
 
 const Movie = model<MovieDocument>("Movie", MovieSchema);

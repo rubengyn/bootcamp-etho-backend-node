@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { ENV_VARS } from '..';
+import { ENV_VARS } from '../index';
 import jwt from 'jsonwebtoken';
 
 interface  JWToken {
@@ -12,7 +12,6 @@ function authorize(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        console.log('Sem auth');
         return res.status(401).json({
             message: 'Não autorizado'
         });
@@ -26,16 +25,15 @@ function authorize(req: Request, res: Response, next: NextFunction) {
         //compara token com token secret
         if (ENV_VARS.token_secret) {
             const data = jwt.verify(token, ENV_VARS.token_secret);
-            const { id } = data as JWToken || undefined;
+            const { id } = data as JWToken;
             /// req user não existe, precisa passara para o JS o que ele é
             req.user = id;
-            next();
+            return next();
         }
     } catch (error) {
         console.log(error);
         return res.status(401).json({error});
     }
-    return token;
 }
 
 export { authorize };

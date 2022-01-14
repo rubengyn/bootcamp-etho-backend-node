@@ -50,18 +50,18 @@ async function create(req: Request, res: Response) {
 
     const user = new User({ name, email, password });
 
-    user.save((error: any, result: any): void => {
+    user.save((error: any, result: any) => {
         if (error) {
-            console.log('Error: ', typeof error)
-            res.json(error);
+            console.log('Error: ', typeof error);
+            return res.json(error);
         }
-        res.status(201).json(
+        return res.status(201).json(
             {
                 id: result._id,
                 name: result.name
             }
         );
-    })
+    });
 
 }
 
@@ -84,11 +84,11 @@ async function destroy(req: Request, res: Response) {
         res.status(500).json({
             message: 'Não foi possivel deletar o usuário'
         })
-    }
+    };
 
     return res.status(200).json({
         messaage: 'Usuário apagado com sucesso.'
-    })
+    });
 }
 
 export { view, destroy, create }

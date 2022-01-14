@@ -1,5 +1,5 @@
 // dependencias 
-import { Document, Schema, model, Mongoose } from 'mongoose'
+import { Document, Schema, model } from 'mongoose'
 import bcryptjs  from 'bcryptjs';
 
 

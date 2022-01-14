@@ -96,6 +96,7 @@ function mapearFilmes(moviesList: any) {
         moviesArray.push(movieObj);
 
     });
+    
     return moviesArray;
 }
 
@@ -141,14 +142,14 @@ function writeToJson(array: Object[]) {
     fileSteam.write(arrayMovies + '\n');
 
 
-    // Observeable, observa se finalziar
+    // Observeable, observa se finalizar
     fileSteam.on('finish', () => {
         console.log('File Steam concluído');
     });
 
     // Observeable, observa se tiver erro
     fileSteam.on('error', (error) => {
-        console.log(`File Steam teve um erro', ${error}`);
+        console.log(`File Steam teve um erro: ${error}`);
     });
 
     fileSteam.end();
