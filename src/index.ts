@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { apiRouter } from './routes/api.routes';
 import { extRouter } from './routes/external.routes';
+import serverless from 'serverless-http';
 
 
 dotenv.config();
@@ -33,5 +34,9 @@ app.listen(ENV_VARS.port, async () => {
     }
 
 });
+
+mongoose.connect(ENV_VARS.mongoURI as string);
+
+export const handler = serverless(app,  { callbackWaitsForEmptyEventLoop: false });
 
 export { ENV_VARS };

@@ -1,0 +1,28 @@
+# Arquivo para configurar servless
+# configuracoes dos servless
+service: bootcamp-clonenetflix-nodejs # nome do servico, vai replicar nas configurações da aws
+provider:                             # provedor
+  name: aws                           # nome do provedor que queremos nos comunicar
+  runtime: nodejs14.x                 # Eh a versão da lib que precisa ser executada
+  stage: dev                          # qq nome dev/prod/hml/hlg/whatever
+  region: us-east-1                   # padrao: a regiao que vai ser implementada
+  memorySize: 128                     # maximo de  memoria da app
+  timeout: 30                         # tempo de espera da resposta
+  environment:                        # configuracoes de ambiente
+    MONGO_URI: 'mongodb+srv://boot1234:boot1234@node-db.jhaks.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    TOKEN_SECRET: 'my-secret-hash'
+plugins:                              # plugins extender a logica do servless
+  - serverless-plugin-typescript      # typescript - interpretar
+  - serverless-offline                # offline    - ter um servidor offline rodando
+functions:                            # a parte mais complexa da aplicação, mapa das requisicoes
+  app:
+    handler: src/index.handler        # ponto de entrada da aplicacao
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true

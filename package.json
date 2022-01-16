@@ -1,7 +1,7 @@
 {
   "name": "bootcamp",
   "version": "1.0.0",
-  "description": "Projeto em Node + Typescript ",
+  "description": "Projeto em Node + Typescript",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node --transpile-only --files ./src/index.ts --ignore ./tests",
@@ -11,20 +11,25 @@
   "license": "ISC",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
-    "@types/jsonwebtoken": "^8.5.6",
-    "@types/mongoose": "^5.11.97",
-    "express": "^4.17.2",
-    "nodemon": "^2.0.15",
-    "ts-node": "^10.4.0"
-  },
-  "dependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^16.11.12",
+    "nodemon": "^2.0.15",
+    "serverless-offline": "^8.3.1",
+    "serverless-plugin-typescript": "^2.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
     "axios": "^0.24.0",
-    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^11.0.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.6"
+    "mongoose": "^6.1.1",
+    "serverless-http": "^2.7.0",
+    "bcryptjs": "^2.4.3"
   }
 }
